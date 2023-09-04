@@ -7,15 +7,15 @@ const url = `mongodb://${DB_HOST}:${DB_PORT}`;
 
 class DBClient {
   constructor() {
-  this.connected = false;
-  MongoClient.connect(url, {useUnifiedTopology: true}, (err, client) => {
-    if (!err) {
-      this.db = client.db(DB_DATABASE);
-      this.usersCollection = this.db.collection('users');
-      this.filesCollection = this.db.collection('files');
-      this.connected = true;
-    }
-  });
+    this.connected = false;
+    MongoClient.connect(url, { useUnifiedTopology: true }, (err, client) => {
+      if (!err) {
+        this.db = client.db(DB_DATABASE);
+        this.usersCollection = this.db.collection('users');
+        this.filesCollection = this.db.collection('files');
+        this.connected = true;
+      }
+    });
   }
 
   isAlive() {
@@ -28,7 +28,7 @@ class DBClient {
   }
 
   async nbFiles() {
-    const files = this.filesCollection.countDocuments()
+    const files = this.filesCollection.countDocuments();
     return files;
   }
 }

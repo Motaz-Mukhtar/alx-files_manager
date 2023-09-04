@@ -7,7 +7,7 @@ class RedisClient {
     this.getAsync = promisify(this.client.get).bind(this.client);
 
     this.client.on('error', (err) => {
-      console.log(`Redis client not connect to the server: ${err}`)
+      console.log(`Redis client not connect to the server: ${err}`);
     });
   }
 
