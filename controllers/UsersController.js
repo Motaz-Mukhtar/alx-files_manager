@@ -1,5 +1,9 @@
+import { ObjectId } from 'mongodb';
 import sha1 from 'sha1';
 import dbClient from '../utils/db';
+import userUtils from '../utils/user';
+
+const errorMessage = { error: 'Unauthorized' };
 
 class UsersController {
   static async postNew(req, res) {
@@ -19,8 +23,13 @@ class UsersController {
     return res.status(201).send({ id: newUser.insertedId, email });
   }
 
-  static getMe(req, res) {
+  static async getMe(req, res) {
+    const user = await userUtils.getUserBasedOnToken(req);
 
+    if (!user) return res.status(401).send(errorMessage);
+
+    const userObject = { id: user._id.toString(), email: user.email };
+    return res.status(200).send(userObject);
   }
 }
 

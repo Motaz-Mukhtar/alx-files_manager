@@ -1,5 +1,6 @@
-import redisClient from 'redis';
-import dbClient from 'db';
+import { ObjectId } from 'mongodb';
+import redisClient from './redis';
+import dbClient from './db';
 
 const errorMessage = { error: 'Unauthorized' };
 
@@ -14,7 +15,7 @@ class userUtils {
 
     if (!userId) return undefined;
 
-    const user = await dbClient.usersCollection.findOne({ _id: userId });
+    const user = await dbClient.usersCollection.findOne({ _id: ObjectId(userId) });
 
     if (!user) return undefined;
 
@@ -22,7 +23,8 @@ class userUtils {
   }
 
   static async getUser(query) {
-    const user = db.usersCollection.findOne(query);
+    const user = dbClient.usersCollection.findOne(query);
+
     return user;
   }
 }
