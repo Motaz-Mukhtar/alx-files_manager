@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { mkdir, writeFile } from 'fs/promises';
+import { promises } from 'fs';
 import { v4 } from 'uuid';
 import userUtils from '../utils/user';
 import fileUtils from '../utils/file';
@@ -9,11 +9,11 @@ const errorMessage = { error: 'Unauthorized' };
 const FOLDER_PATH = process.env.FOLDER_PATH || '/tmp/files_manager';
 
 class FilesController {
-  static postUpload(req, res) {
+  static async postUpload(req, res) {
     const user = await userUtils.getUserBasedOnToken(req);
     const file = await fileUtils.validateFileData(req);    
     if (!user) return res.status(401).send(errorMessage);
-    if (file.error) return res.status(400).send(file.error);
+    if (file.error) return res.status(400).send({ error: file.error });
 
     file.userId = user._id.toString();
     if (file.type === 'folder') {
@@ -25,8 +25,8 @@ class FilesController {
     const filePath = `${FOLDER_PATH}/${fileName}`;
     const buffer = Buffer.from(file.data, 'base64');    
     try {
-      await mkdir(filePath, { recursive: true });
-      await writeFile(filePath, buffer, { encoding: 'utf8' });
+      await promises.mkdir(filePath, { recursive: true });
+      await promises.writeFile(filePath, buffer, { encoding: 'utf8' });
     } catch (error) {
       return res.status(400).send({ error });
     }

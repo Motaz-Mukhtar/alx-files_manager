@@ -3,25 +3,22 @@ import dbClient from './db';
 
 class fileUtils {
   static async validateFileData(req) {
-    const file;
+    let file;
     const { name, type, isPublic = false, data } = req.body;
     let { parentId = 0 } = req.body;
 
     if (!name) return { error: 'Missing name' };
-    if (!type || type !== 'folder' | 'file' | 'image') {
+    if (!type) {
       return { error: 'Missing type' };
     }
-    if (!data && type != 'folder') return { error: 'Missing data' };
+    if (type !== 'folder' && type !== 'file' && type !== 'image') return { error: 'Missing name' };
+	  if (!data && type != 'folder') return { error: 'Missing data' };
 
     if (parentId != 0) {
       file = await this.getFile({ _id: ObjectId(parentId) });
-      
-    } else {
-      file = null;
+      if (!file) return { error: 'Parent not found' };
     }
-
-    if (!file) return { error: 'Parent not found' };
-    else if (file.type !== 'folder') return { error: 'Parent is not a folder' };
+    if (file && file.type !== 'folder') return { error: 'Parent is not a folder' };
 
     const fileObject = { name, type, parentId, isPublic, data };
     return fileObject;
