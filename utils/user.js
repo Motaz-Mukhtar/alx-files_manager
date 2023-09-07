@@ -21,8 +21,7 @@ class userUtils {
   }
 
   static async getUser(query) {
-    const user = dbClient.usersCollection.findOne(query);
-
+    const user = await dbClient.usersCollection.findOne(query);
     return user;
   }
 }
