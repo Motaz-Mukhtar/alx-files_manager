@@ -12,9 +12,9 @@ class AuthController {
     // Convert from base64 to string (utf-8)
     const decodeAuth = atob(Authorization);
 
-    const [ email, password ] = decodeAuth.split(':');
+    const [email, password] = decodeAuth.split(':');
 
-    if ( !email || !password ) return res.status(401).send(errorMessage);
+    if (!email || !password) return res.status(401).send(errorMessage);
 
     const user = await userUtils.getUser({ email, password: sha1(password) });
 
@@ -25,13 +25,13 @@ class AuthController {
 
     await redisClient.set(key, user._id.toString(), 24 * 3600);
 
-    return res.status(200).send({token});
+    return res.status(200).send({ token });
   }
 
   static async getDisconnect(req, res) {
     const user = await userUtils.getUserBasedOnToken(req);
     const token = req.header('X-Token');
-    
+
     if (!user) return res.status(401).send(errorMessage);
     await redisClient.del(`auth_${token}`);
 

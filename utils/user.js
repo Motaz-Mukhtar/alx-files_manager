@@ -2,8 +2,6 @@ import { ObjectId } from 'mongodb';
 import redisClient from './redis';
 import dbClient from './db';
 
-const errorMessage = { error: 'Unauthorized' };
-
 class userUtils {
   static async getUserBasedOnToken(request) {
     const Xtoken = request.header('X-Token');
