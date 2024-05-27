@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import dbClient from './db';
+import dbClient from './db.js';
 
 class fileUtils {
   static async validateFileData(req) {

@@ -2,10 +2,10 @@ import { ObjectId } from 'mongodb';
 import { existsSync, promises, fsPromises } from 'fs';
 import { v4 } from 'uuid';
 import mime from 'mime-types';
-import userUtils from '../utils/user';
-import fileUtils from '../utils/file';
-import redisClient from '../utils/redis';
-import dbClient from '../utils/db';
+import userUtils from '../utils/user.js';
+import fileUtils from '../utils/file.js';
+import redisClient from '../utils/redis.js';
+import dbClient from '../utils/db.js';
 
 const errorMessage = { error: 'Unauthorized' };
 const FOLDER_PATH = process.env.FOLDER_PATH || '/tmp/files_manager';

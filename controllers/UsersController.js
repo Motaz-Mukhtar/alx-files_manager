@@ -1,6 +1,6 @@
 import sha1 from 'sha1';
-import dbClient from '../utils/db';
-import userUtils from '../utils/user';
+import dbClient from '../utils/db.js';
+import userUtils from '../utils/user.js';
 
 const errorMessage = { error: 'Unauthorized' };
 
